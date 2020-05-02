@@ -41,7 +41,7 @@ public class SwaggerConfig {
 						"https://www.linkedin.com/in/matheusscardoso/", 
 						"matheusscardoso5@gmail.com"),
 				"Apache License Version 2.0",
-				"https://www.apache.org/licensen.html",
+				"https://www.apache.org/licenses/LICENSE-2.0.txt",
 				new ArrayList<VendorExtension>());
 		
 		return apiInfo;
