@@ -77,9 +77,6 @@ public class Profissional implements Serializable {
 //		return 0;
 //	}	
 	
-//	public void setEstabelecimento_id(Estabelecimento estabelecimento_id) {
-//		this.estabelecimento_id = estabelecimento_id;
-//	}	
 	
 	public Profissional(String nome, 
 			String endereco, 

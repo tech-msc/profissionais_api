@@ -19,13 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.home.msc.profissionais_api.models.Estabelecimento;
 import br.home.msc.profissionais_api.models.Profissional;
+import br.home.msc.profissionais_api.models.ProfissionalRequest;
 import br.home.msc.profissionais_api.repository.IEstabelecimentoRepository;
 import br.home.msc.profissionais_api.repository.IProfissionalRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-@Api(value="API Profissionais", tags="Profissional")
-@CrossOrigin(origins="*")
+@Api(value = "API Profissionais", tags = "Profissional")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/profissional")
 public class ProfissionalResource {
@@ -52,7 +53,7 @@ public class ProfissionalResource {
 	}
 
 	@GetMapping(value = "/{id}")
-	@ApiOperation(value="Retornar um Profissional")
+	@ApiOperation(value = "Retornar um Profissional")
 	public ResponseEntity<Profissional> listOne(@PathVariable(value = "id") int id) {
 		try {
 
@@ -71,10 +72,23 @@ public class ProfissionalResource {
 	}
 
 	@PostMapping()
-	@ApiOperation(value="Criar um novo Profissional")
-	public ResponseEntity<Profissional> create(@Valid @RequestBody Profissional profissional) {
+	@ApiOperation(value = "Criar um novo Profissional")
+	public ResponseEntity<Profissional> create(@Valid @RequestBody ProfissionalRequest profissional) {
 		try {
-			return new ResponseEntity<Profissional>(profissionalRepository.save(profissional), HttpStatus.CREATED);
+
+			Profissional profissionalParaSave = new Profissional(profissional.getNome(), profissional.getEndereco(),
+					null);
+
+			if (profissional.getEstabelecimento_id() != null) {
+				Estabelecimento estabelecimento = estabelecimentoRepository
+						.findById((int) profissional.getEstabelecimento_id());
+
+				profissionalParaSave.setEstabelecimento_id(estabelecimento);
+
+			}
+
+			return new ResponseEntity<Profissional>(profissionalRepository.save(profissionalParaSave),
+					HttpStatus.CREATED);
 
 		} catch (Exception e) {
 			// String em = e.getMessage();
@@ -84,13 +98,13 @@ public class ProfissionalResource {
 	}
 
 	@PutMapping(value = "/{id}")
-	@ApiOperation(value="Editar um Profissional")
+	@ApiOperation(value = "Editar um Profissional")
 	public ResponseEntity<Profissional> update(@PathVariable int id, @RequestBody Profissional profissional) {
 
-		if(profissional.getId() != id) {
+		if (profissional.getId() != id) {
 			return new ResponseEntity<Profissional>(HttpStatus.BAD_REQUEST);
 		}
-		
+
 		Estabelecimento estabelecimento = estabelecimentoRepository
 				.findById((int) profissional.getEstabelecimento_id());
 
@@ -105,11 +119,10 @@ public class ProfissionalResource {
 	}
 
 	@DeleteMapping(value = "/{id}")
-	@ApiOperation(value="Excluir um Profissional")
+	@ApiOperation(value = "Excluir um Profissional")
 	public ResponseEntity<Profissional> delete(@PathVariable int id) {
 
-		Profissional profissionalExiste = profissionalRepository
-				.findById(id);
+		Profissional profissionalExiste = profissionalRepository.findById(id);
 
 		if (profissionalExiste != null) {
 			profissionalRepository.deleteById(id);
