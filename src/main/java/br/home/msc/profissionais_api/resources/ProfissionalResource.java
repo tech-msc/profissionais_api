@@ -111,14 +111,21 @@ public class ProfissionalResource {
 
 			Estabelecimento estabelecimento = new Estabelecimento();
 
-			if (profissional.getEstabelecimento_id() != null) {
+			if (profissional.getEstabelecimento_id() != null && profissional.getEstabelecimento_id() != 0) {
 				Estabelecimento _estabelecimento = estabelecimentoRepository
-						.findById((int) profissional.getEstabelecimento_id());
-
-				estabelecimento.setId(_estabelecimento.getId());
-
+						.findById((int) profissional.getEstabelecimento_id());						
+				
+				return profissionalRepository.findById(Integer.valueOf(id)).map(mapper -> {
+					mapper.setNome(profissionaltoUpdate.getNome());
+					mapper.setEndereco(profissionaltoUpdate.getEndereco());
+					mapper.setEstabelecimento_id(_estabelecimento);
+					Profissional updated = profissionalRepository.save(mapper);
+					return ResponseEntity.ok().body(updated);
+				}).orElse(ResponseEntity.notFound().build());
+				
 			}
-
+			
+			// Se estabelecimento for null (remover relacionamento)		
 			return profissionalRepository.findById(Integer.valueOf(id)).map(mapper -> {
 				mapper.setNome(profissionaltoUpdate.getNome());
 				mapper.setEndereco(profissionaltoUpdate.getEndereco());
@@ -126,6 +133,7 @@ public class ProfissionalResource {
 				Profissional updated = profissionalRepository.save(mapper);
 				return ResponseEntity.ok().body(updated);
 			}).orElse(ResponseEntity.notFound().build());
+			
 		} catch (Exception e) {
 			return new ResponseEntity<Profissional>(HttpStatus.BAD_REQUEST);
 		}
