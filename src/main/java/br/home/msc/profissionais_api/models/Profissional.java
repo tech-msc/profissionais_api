@@ -2,12 +2,14 @@ package br.home.msc.profissionais_api.models;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 @Entity
@@ -22,7 +24,7 @@ public class Profissional implements Serializable {
 	private String nome;
 	private String endereco;
 
-	@ManyToOne(optional = true)
+	@ManyToOne(optional = true, cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "estabelecimento_id", referencedColumnName = "id", nullable = true)
 	private Estabelecimento estabelecimento_id;
 
@@ -70,5 +72,5 @@ public class Profissional implements Serializable {
 
 	public Profissional() {
 	}
-
+		
 }

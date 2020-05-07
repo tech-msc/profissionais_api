@@ -4,11 +4,13 @@ import java.io.Serializable;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 @Entity
@@ -23,7 +25,9 @@ public class Estabelecimento implements Serializable {
 	private String nome;
 	private String endereco;
 
-	@OneToMany(mappedBy = "estabelecimento_id", targetEntity = Profissional.class, cascade = CascadeType.DETACH)
+	@OneToMany(mappedBy = "estabelecimento_id",
+			targetEntity = Profissional.class, cascade = CascadeType.DETACH)
+	@Column(  nullable = true )
 	private Collection<Profissional> profissionais;
 
 //	@PreRemove
@@ -77,5 +81,7 @@ public class Estabelecimento implements Serializable {
 	public void setProfissionais(Collection<Profissional> profissionais) {
 		this.profissionais = profissionais;
 	}
+	
+	
 
 }
