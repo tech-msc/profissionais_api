@@ -122,7 +122,7 @@ public class ProfissionalResource {
 			return profissionalRepository.findById(Integer.valueOf(id)).map(mapper -> {
 				mapper.setNome(profissionaltoUpdate.getNome());
 				mapper.setEndereco(profissionaltoUpdate.getEndereco());
-				mapper.setEstabelecimento_id(estabelecimento);
+				mapper.setEstabelecimento_id(null);
 				Profissional updated = profissionalRepository.save(mapper);
 				return ResponseEntity.ok().body(updated);
 			}).orElse(ResponseEntity.notFound().build());
