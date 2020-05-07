@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
@@ -29,13 +30,15 @@ public class Estabelecimento implements Serializable {
 			targetEntity = Profissional.class, cascade = CascadeType.DETACH)
 	@Column(  nullable = true )
 	private Collection<Profissional> profissionais;
-
-//	@PreRemove
-//	private void preRemove() {
-//		for (Profissional p : profissionais) {
-//			p.setEstabelecimento_id(null);
-//		}
-//	}
+	
+	@PreRemove
+	private void preRemove() {
+		for (Profissional profissional : profissionais) {
+			if (profissional.getEstabelecimento_id() == this.id ) {
+				profissional.setEstabelecimento_id(null);
+			}
+		}	
+	}
 
 	public Integer getId() {
 		return id;
