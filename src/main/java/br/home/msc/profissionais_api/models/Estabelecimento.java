@@ -23,9 +23,7 @@ public class Estabelecimento implements Serializable {
 	private String nome;
 	private String endereco;
 
-	@OneToMany(mappedBy = "estabelecimento_id", 
-			targetEntity = Profissional.class, 
-			cascade = CascadeType.DETACH)
+	@OneToMany(mappedBy = "estabelecimento_id", targetEntity = Profissional.class, cascade = CascadeType.DETACH)
 	private Collection<Profissional> profissionais;
 
 //	@PreRemove
@@ -68,7 +66,10 @@ public class Estabelecimento implements Serializable {
 	public Estabelecimento() {
 	}
 
-	
+	public Estabelecimento(int id) {
+		this.setId(id);
+	}
+
 //	public Collection<Profissional> getProfissionais() {
 //		return profissionais;
 //	}

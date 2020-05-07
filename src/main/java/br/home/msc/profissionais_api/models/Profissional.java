@@ -21,16 +21,13 @@ public class Profissional implements Serializable {
 	private Integer id;
 	private String nome;
 	private String endereco;
-	
+
 	@ManyToOne(optional = true)
-	@JoinColumn(name="estabelecimento_id",
-		referencedColumnName = "id",
-		nullable = true)
+	@JoinColumn(name = "estabelecimento_id", referencedColumnName = "id", nullable = true)
 	private Estabelecimento estabelecimento_id;
-	
 
 	public Integer getEstabelecimento_id() {
-		if(estabelecimento_id == null ) {
+		if (estabelecimento_id == null) {
 			return null;
 		}
 		return estabelecimento_id.getId();
@@ -64,29 +61,14 @@ public class Profissional implements Serializable {
 		this.endereco = endereco;
 	}
 
-//	@Column(nullable = true)
-//	public Integer getEstabelecimento_id() {
-//		
-//		try {
-//			return estabelecimento_id.getId();			 		
-//		}
-//		catch (Exception e) {
-////			String em = e.getMessage();
-//		}
-//				
-//		return 0;
-//	}	
-	
-	
-	public Profissional(String nome, 
-			String endereco, 
-			Estabelecimento estabelecimento) {
+	public Profissional(String nome, String endereco, Estabelecimento estabelecimento) {
 		super();
 		this.nome = nome;
 		this.endereco = endereco;
-		this.estabelecimento_id =  estabelecimento ;
+		this.estabelecimento_id = estabelecimento;
 	}
-	
-	public Profissional () {}
+
+	public Profissional() {
+	}
 
 }

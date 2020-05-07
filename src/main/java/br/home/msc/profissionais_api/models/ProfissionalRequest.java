@@ -2,24 +2,16 @@ package br.home.msc.profissionais_api.models;
 
 import java.io.Serializable;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 public class ProfissionalRequest implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-
 	private Integer id;
 	private String nome;
-	private String endereco;	
+	private String endereco;
 	private Integer estabelecimento_id;
-	
 
-	public Integer getEstabelecimento_id() {		
+	public Integer getEstabelecimento_id() {
 		return estabelecimento_id;
 	}
 
@@ -51,18 +43,15 @@ public class ProfissionalRequest implements Serializable {
 		this.endereco = endereco;
 	}
 
-
-	public ProfissionalRequest(String nome, 
-			String endereco, 
-			Integer estabelecimento) {
+	public ProfissionalRequest(String nome, String endereco, Integer estabelecimento) {
 		super();
 		this.nome = nome;
 		this.endereco = endereco;
-		this.estabelecimento_id =  estabelecimento ;
+		this.estabelecimento_id = estabelecimento;
 	}
-	
+
 	public ProfissionalRequest() {
 		// TODO Auto-generated constructor stub
-	} 
+	}
 
 }

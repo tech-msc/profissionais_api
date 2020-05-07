@@ -7,9 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ProfissionaisApiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication
-			.run(ProfissionaisApiApplication.class, args);
-			
+		SpringApplication.run(ProfissionaisApiApplication.class, args);
+
 	}
 
 }
