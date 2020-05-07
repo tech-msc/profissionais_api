@@ -46,9 +46,8 @@ public class ProfissionalResource {
 			return new ResponseEntity<List<Profissional>>(profissional_retorno, HttpStatus.OK);
 
 		} catch (Exception e) {
+			return new ResponseEntity<List<Profissional>>(HttpStatus.BAD_REQUEST);
 		}
-
-		return new ResponseEntity<List<Profissional>>(HttpStatus.BAD_REQUEST);
 
 	}
 
@@ -99,22 +98,37 @@ public class ProfissionalResource {
 
 	@PutMapping(value = "/{id}")
 	@ApiOperation(value = "Editar um Profissional")
-	public ResponseEntity<Profissional> update(@PathVariable int id, @RequestBody Profissional profissional) {
+	public ResponseEntity<Profissional> update(@PathVariable int id,
+			@Valid @RequestBody ProfissionalRequest profissional) {
 
-		if (profissional.getId() != id) {
+		try {
+			if (profissional.getId() != id) {
+				throw new Exception();
+			}
+
+			Profissional profissionaltoUpdate = new Profissional(profissional.getNome(), profissional.getEndereco(),
+					null);
+
+			Estabelecimento estabelecimento = new Estabelecimento();
+
+			if (profissional.getEstabelecimento_id() != null) {
+				Estabelecimento _estabelecimento = estabelecimentoRepository
+						.findById((int) profissional.getEstabelecimento_id());
+
+				estabelecimento.setId(_estabelecimento.getId());
+
+			}
+
+			return profissionalRepository.findById(Integer.valueOf(id)).map(mapper -> {
+				mapper.setNome(profissionaltoUpdate.getNome());
+				mapper.setEndereco(profissionaltoUpdate.getEndereco());
+				mapper.setEstabelecimento_id(estabelecimento);
+				Profissional updated = profissionalRepository.save(mapper);
+				return ResponseEntity.ok().body(updated);
+			}).orElse(ResponseEntity.notFound().build());
+		} catch (Exception e) {
 			return new ResponseEntity<Profissional>(HttpStatus.BAD_REQUEST);
 		}
-
-		Estabelecimento estabelecimento = estabelecimentoRepository
-				.findById((int) profissional.getEstabelecimento_id());
-
-		return profissionalRepository.findById(Integer.valueOf(id)).map(mapper -> {
-			mapper.setNome(profissional.getNome());
-			mapper.setEndereco(profissional.getEndereco());
-			mapper.setEstabelecimento_id(estabelecimento);
-			Profissional updated = profissionalRepository.save(mapper);
-			return ResponseEntity.ok().body(updated);
-		}).orElse(ResponseEntity.notFound().build());
 
 	}
 
@@ -122,11 +136,16 @@ public class ProfissionalResource {
 	@ApiOperation(value = "Excluir um Profissional")
 	public ResponseEntity<Profissional> delete(@PathVariable int id) {
 
-		Profissional profissionalExiste = profissionalRepository.findById(id);
+		try {
+			Profissional profissionalExiste = profissionalRepository.findById(id);
 
-		if (profissionalExiste != null) {
-			profissionalRepository.deleteById(id);
-			return new ResponseEntity<Profissional>(profissionalExiste, HttpStatus.NO_CONTENT);
+			if (profissionalExiste != null) {
+				profissionalRepository.deleteById(id);
+				return new ResponseEntity<Profissional>(profissionalExiste, HttpStatus.NO_CONTENT);
+			}
+
+		} catch (Exception e) {
+			return new ResponseEntity<Profissional>(HttpStatus.BAD_REQUEST);
 		}
 
 		return new ResponseEntity<Profissional>(HttpStatus.NOT_FOUND);
