@@ -24,7 +24,7 @@ public class Profissional implements Serializable {
 	private String nome;
 	private String endereco;
 
-	@ManyToOne(optional = true, cascade = CascadeType.REMOVE)
+	@ManyToOne(optional = true , cascade = CascadeType.DETACH)
 	@JoinColumn(name = "estabelecimento_id", referencedColumnName = "id", nullable = true)
 	private Estabelecimento estabelecimento_id;
 
@@ -36,7 +36,9 @@ public class Profissional implements Serializable {
 	}
 
 	public void setEstabelecimento_id(Estabelecimento estabelecimento_id) {
-		this.estabelecimento_id = estabelecimento_id;
+		
+			this.estabelecimento_id = estabelecimento_id;
+		
 	}
 
 	public Integer getId() {
@@ -72,5 +74,5 @@ public class Profissional implements Serializable {
 
 	public Profissional() {
 	}
-		
+
 }
